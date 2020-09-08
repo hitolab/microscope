@@ -1,5 +1,6 @@
 # クライアントを作成
 import socket
+import time
 
 #ハッシュ関数
 def addChecksom(a):
@@ -49,19 +50,29 @@ def LightOFF():
     msg = addChecksom(msg)
     sendMessage(msg)
 
+
+# Parameters
+endtime = 3 # 何日間続けるか？
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-
-	s.connect(('192.168.0.2', 40001))
-#	setIP('192.168.0.2')
-	setSubnetMask('255.255.255.0')
-#	setGateway('192.168.0.1')
-	setLightIntensity('105')
-	LightON()
-
+    s.connect(('192.168.0.2', 40001))
+#   setIP('192.168.0.2')
+    setSubnetMask('255.255.255.0')
+#   setGateway('192.168.0.1')
+    setLightIntensity('105')
+    start = time.time()
+    while True:
+        num = 1
+        LightOFF()
+        time.sleep(num)
+        LightON()
+        time.sleep(num)
+        if time.time() - start > endtime:
+         print('!!BREAK!!')
+         break
+​
 #myhash(b'@00E01192.168.003.002')
 """
-
-
 
     # サーバを指定
     s.connect(('192.168.0.2', 40001))
@@ -71,5 +82,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     data = s.recv(1024)
     #
     print(repr(data))
-"""
-
